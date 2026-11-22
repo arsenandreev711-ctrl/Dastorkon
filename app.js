@@ -1,4 +1,4 @@
-/* NFC menu — гость (/t/КОД), кабинет ресторана (/cabinet), панель платформы (/admin) */
+/* Dastorkon — гость (/t/КОД), кабинет ресторана (/cabinet), панель платформы (/admin) */
 (function () {
 "use strict";
 
@@ -107,7 +107,7 @@ function route() {
   const tag = m ? m[1] : qs.get("t");
   if (tag) return Guest(tag.toUpperCase());
   if (/\/cabinet$/.test(path) || qs.has("cabinet")) return withAuth("Кабинет ресторана", Cabinet);
-  if (/\/admin$/.test(path) || qs.has("admin")) return withAuth("Панель NFC menu", Admin);
+  if (/\/admin$/.test(path) || qs.has("admin")) return withAuth("Панель Dastorkon", Admin);
   return Landing();
 }
 function notConfigured() {
@@ -116,8 +116,8 @@ function notConfigured() {
 }
 function Landing() {
   cur = { acts: {} };
-  document.title = "NFC menu";
-  mount(`<div class="land gut stag"><span class="emb" style="--i:0">${emblem()}</span><h1 style="--i:1">NFC menu</h1>
+  document.title = "Dastorkon";
+  mount(`<div class="land gut stag"><span class="emb" style="--i:0">${emblem()}</span><h1 style="--i:1">Dastorkon</h1>
   <p style="--i:2">Гость прикладывает телефон к табличке на столе, смотрит меню и заказывает. Ресторан сразу получает заказ с номером стола.</p>
   <div class="row" style="--i:3;justify-content:center"><a class="btn primary" href="/cabinet">Кабинет ресторана</a></div>
   ${CFG.SUPPORT ? `<p class="note" style="--i:4">Подключение и поддержка: ${esc(CFG.SUPPORT)}</p>` : ""}</div>`);
@@ -170,7 +170,7 @@ function authView(title) {
   draw();
 }
 function topbar(ctx, extra) {
-  return `<div class="topbar"><div class="in gut"><a class="brand" href="/"><span class="emb">${emblem()}</span>NFC menu</a>
+  return `<div class="topbar"><div class="in gut"><a class="brand" href="/"><span class="emb">${emblem()}</span>Dastorkon</a>
   <div class="right">${extra || ""}<span class="who">${esc(ctx.email || "")}</span><button type="button" class="btn sm" data-a="logout">Выйти</button></div></div></div>`;
 }
 async function logout() { await sb.auth.signOut(); route(); }
@@ -404,7 +404,7 @@ function Guest(tag) {
   (async () => {
     mount(`<div class="g"><div class="center"><div class="box"><span class="spinner emb">${emblem()}</span><p class="note">${t("loading")}</p></div></div></div>`, false);
     if (!(await loadMenu())) return;
-    document.title = M.restaurant.name + " · NFC menu";
+    document.title = M.restaurant.name + " · Dastorkon";
     if (G.orders.length) await refreshOrders();
     if (!S[G.screen] || (["done", "track"].includes(G.screen) && !O[G.cur])) G.screen = "welcome";
     if (G.screen === "pay" && !G.cart.length) G.screen = "menu";
@@ -429,7 +429,7 @@ function Cabinet(ctx) {
   if (!rs.length) {
     cur = { acts: { logout } };
     mount(topbar(ctx) + `<div class="center"><div class="box"><span class="emb" style="width:64px;height:64px">${emblem()}</span><h1 style="font-size:22px">Аккаунт ещё не привязан к ресторану</h1>
-    <p class="note" style="font-size:15px">Сообщите администратору NFC menu ваш email: <b>${esc(ctx.email)}</b>. После привязки обновите страницу.</p>
+    <p class="note" style="font-size:15px">Сообщите администратору Dastorkon ваш email: <b>${esc(ctx.email)}</b>. После привязки обновите страницу.</p>
     ${ctx.is_admin || !ctx.admins_exist ? `<a class="btn primary" href="/admin">Открыть панель платформы</a>` : ""}</div></div>`);
     return;
   }
@@ -576,13 +576,13 @@ function Cabinet(ctx) {
   function tTables() {
     const used = new Set(D.tables.map(x => x.tag_code).filter(Boolean)), free = D.tags.filter(x => !used.has(x.code));
     return `<div class="row"><button type="button" class="btn sm primary" data-a="tableadd">+ Стол</button>${D.tables.length ? `<button type="button" class="btn sm" data-a="copyall">Скопировать все ссылки</button>` : ""}
-    <span class="note">Свободных меток: ${free.length}. ${free.length ? "" : "Новые метки выдаёт администратор NFC menu."} Ссылку из таблицы записывают на NFC-метку стола.</span></div>
+    <span class="note">Свободных меток: ${free.length}. ${free.length ? "" : "Новые метки выдаёт администратор Dastorkon."} Ссылку из таблицы записывают на NFC-метку стола.</span></div>
     <div class="tbl-wrap"><table><thead><tr><th>Стол</th><th>Метка</th><th>Ссылка для метки</th><th>Принимает заказы</th><th></th></tr></thead><tbody>
     ${D.tables.map(x => `<tr><td><input type="number" id="tn-${x.id}" min="1" value="${x.number}" data-f="tnum" data-id="${x.id}" style="width:90px;min-width:0" aria-label="Номер стола"></td>
     <td><select id="tt-${x.id}" data-f="ttag" data-id="${x.id}" aria-label="Метка"><option value="">— нет —</option>${(x.tag_code ? [{ code: x.tag_code }] : []).concat(free).map(g => `<option value="${g.code}" ${g.code === x.tag_code ? "selected" : ""}>${g.code}</option>`).join("")}</select></td>
     <td>${x.tag_code ? `<a class="mono" href="${esc(tagLink(x.tag_code))}" target="_blank" rel="noopener">${esc(tagLink(x.tag_code).replace(/^https?:\/\//, ""))}</a>` : `<span class="note">Выберите метку</span>`}</td>
     <td><label class="sw"><input type="checkbox" id="ta-${x.id}" data-f="tact" data-id="${x.id}" ${x.active ? "checked" : ""} aria-label="Принимает заказы"><i></i></label></td>
-    <td><span class="row" style="flex-wrap:nowrap">${x.tag_code ? `<button type="button" class="btn sm" data-a="copy" data-v="${x.tag_code}">Копировать</button>` : ""}<button type="button" class="btn sm danger" data-a="tabledel" data-v="${x.id}">${U.confirm === x.id ? "Точно?" : "Удалить"}</button></span></td></tr>`).join("") || `<tr><td colspan="5" class="empty">Столов пока нет. Нажмите «+ Стол».</td></tr>`}
+    <td><span class="row" style="flex-wrap:nowrap">${x.tag_code ? `<button type="button" class="btn sm" data-a="qr" data-v="${x.id}">QR</button><button type="button" class="btn sm" data-a="copy" data-v="${x.tag_code}">Копировать</button>` : ""}<button type="button" class="btn sm danger" data-a="tabledel" data-v="${x.id}">${U.confirm === x.id ? "Точно?" : "Удалить"}</button></span></td></tr>`).join("") || `<tr><td colspan="5" class="empty">Столов пока нет. Нажмите «+ Стол».</td></tr>`}
     </tbody></table></div>`;
   }
   async function copyText(text) {
@@ -679,6 +679,9 @@ function Cabinet(ctx) {
         D.tables = await q(sb.from("tables").select("*").eq("restaurant_id", rid).order("number")); render(false); }),
       tabledel: v => twoStep(v, busyWrap(async () => { await q(sb.from("tables").delete().eq("id", v)); D.tables = D.tables.filter(x => x.id !== v); render(false); }))(),
       copy: v => copyText(tagLink(v)),
+      qr: v => { const x = D.tables.find(t => t.id === v); if (!x || !x.tag_code) return; const link = tagLink(x.tag_code); let svg = `<p class="note">Не удалось построить QR-код</p>`;
+        try { if (typeof qrcode === "function") { const qq = qrcode(0, "M"); qq.addData(link); qq.make(); svg = qq.createSvgTag({ cellSize: 8, margin: 2, scalable: true }); } } catch (e) {}
+        openSheet(`<button type="button" class="x" data-a="x" aria-label="Закрыть">✕</button><div class="sheet-body gut" style="padding-top:22px;justify-items:center;text-align:center"><h3 style="font-family:var(--f-ui);font-size:22px">Стол ${x.number}</h3><div style="background:#fff;padding:12px;border-radius:16px;width:min(320px,100%)">${svg}</div><a class="mono" href="${esc(link)}" target="_blank" rel="noopener">${esc(link.replace(/^https?:\/\//, ""))}</a><p class="note">QR-код ведёт туда же, куда NFC-метка: для телефонов без NFC. Сохраните картинку или сделайте скриншот для печати на табличке.</p></div>`, true); },
       copyall: () => copyText(D.tables.filter(x => x.tag_code).map(x => `Стол ${x.number}: ${tagLink(x.tag_code)}`).join("\n")),
       savetag: busyWrap(async () => { await patchRest({ tagline: read3("rt") }); toast("Сохранено"); }),
       cover: busyWrap(async () => { const url = await uploadPhoto(rid, "cover", 1400); if (!url) return; await patchRest({ cover_url: url }); render(false); toast("Фото обновлено"); }),
@@ -721,7 +724,7 @@ function Admin(ctx) {
   if (!ctx.is_admin) {
     cur = { acts: { logout, claim: async () => { try { const ok = await rpc("claim_platform_admin"); if (ok) { toast("Вы администратор платформы"); route(); } else toast("Администратор уже назначен."); } catch (e) { toast(errMsg(e)); } } } };
     mount(topbar(ctx) + `<div class="center"><div class="box"><span class="emb" style="width:64px;height:64px">${emblem()}</span>
-    ${ctx.admins_exist ? `<h1 style="font-size:22px">Нет доступа</h1><p class="note">Эта страница только для администраторов NFC menu.</p><a class="btn" href="/cabinet">Кабинет ресторана</a>`
+    ${ctx.admins_exist ? `<h1 style="font-size:22px">Нет доступа</h1><p class="note">Эта страница только для администраторов Dastorkon.</p><a class="btn" href="/cabinet">Кабинет ресторана</a>`
       : `<h1 style="font-size:22px">Назначьте администратора платформы</h1><p class="note" style="font-size:15px">Администратора ещё нет. Первый, кто нажмёт кнопку, получит полный доступ. Сделайте это со своего аккаунта: <b>${esc(ctx.email)}</b>.</p><button type="button" class="btn primary" data-a="claim">Стать администратором</button>`}</div></div>`);
     return;
   }
@@ -777,8 +780,8 @@ function Admin(ctx) {
   }
   const TABS = { rests: ["Рестораны", tRests], tags: ["NFC-метки", tTags], subs: ["Подписки", tSubs], users: ["Доступы", tUsers] };
   function render(anim) {
-    document.title = "Панель NFC menu";
-    mount(topbar(ctx) + `<div class="ws gut"><div class="ws-head"><div><h1>Панель NFC menu</h1><p>Рестораны, метки, подписки и доступы</p></div></div>
+    document.title = "Панель Dastorkon";
+    mount(topbar(ctx) + `<div class="ws gut"><div class="ws-head"><div><h1>Панель Dastorkon</h1><p>Рестораны, метки, подписки и доступы</p></div></div>
     <div class="tabs" role="tablist">${Object.entries(TABS).map(([k, [n]]) => `<button type="button" role="tab" data-a="tab" data-v="${k}" aria-selected="${U.tab === k}">${n}</button>`).join("")}</div>
     <div class="stag" style="display:grid;gap:14px">${TABS[U.tab][1]()}</div></div>`, anim);
     requestAnimationFrame(() => requestAnimationFrame(() => document.querySelectorAll(".bar i[data-w]").forEach(b => b.style.width = b.dataset.w + "%")));

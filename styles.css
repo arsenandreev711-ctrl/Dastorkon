@@ -1,4 +1,4 @@
-/* NFC menu. Layout: guest = one phone-width column with sticky cart; cabinet and admin = tabbed workspaces up to 1180px. Accent = flag red + sun yellow; the nomad roundel is the one ornament. */
+/* Dastorkon. Layout: guest = one phone-width column with sticky cart; cabinet and admin = tabbed workspaces up to 1180px. Accent = flag red + sun yellow; the nomad roundel is the one ornament. */
 :root{
   --bg:#f5f6f8; --surface:#ffffff; --surface-2:#eef0f3; --ink:#121417; --muted:#5d646e; --line:#e1e4e9;
   --accent:#d62839; --accent-ink:#ffffff; --accent-soft:#fbe9eb; --sun:#f2a900; --ok:#1f9d55; --ok-soft:#e4f5eb; --warn:#b45309; --warn-soft:#fdf0dc;
