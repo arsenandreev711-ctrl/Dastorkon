@@ -264,6 +264,11 @@ begin
   if found then return jsonb_build_object('ok', true, 'duplicate', true, 'order', public.order_json(o.id)); end if;
 
   if not public.serviceable(r) or not t.active then return jsonb_build_object('ok', false, 'code', 'table_off'); end if;
+  -- защита от потока заказов: не больше 6 заказов за 2 минуты на стол и 3 в минуту с одного устройства
+  if (select count(*) from public.orders where table_id = t.id and created_at > now() - interval '2 minutes') >= 6
+     or (select count(*) from public.orders where guest_token = p_guest and created_at > now() - interval '1 minute') >= 3 then
+    return jsonb_build_object('ok', false, 'code', 'too_fast');
+  end if;
   if p_pay not in ('waiter','online') then return jsonb_build_object('ok', false, 'code', 'bad_request'); end if;
   if p_pay = 'online' and not r.online_pay then return jsonb_build_object('ok', false, 'code', 'online_unavailable'); end if;
   if jsonb_typeof(p_lines) is distinct from 'array' or jsonb_array_length(p_lines) = 0 then
@@ -366,21 +371,10 @@ language sql stable security definer set search_path = public as $$
       where s.user_id is not null or public.is_platform_admin()), '[]'::jsonb))
 $$;
 
--- Первый вошедший становится администратором платформы. Потом функция ничего не делает.
-create or replace function public.claim_platform_admin() returns boolean
-language plpgsql volatile security definer set search_path = public as $$
-begin
-  if auth.uid() is null then return false; end if;
-  lock table public.platform_admins in exclusive mode;
-  if exists(select 1 from public.platform_admins) then return false; end if;
-  insert into public.platform_admins(user_id) values (auth.uid());
-  return true;
-end $$;
-
 create or replace function public.list_staff(p_rid uuid) returns jsonb
 language plpgsql stable security definer set search_path = public as $$
 begin
-  if not public.is_staff(p_rid) then raise exception 'forbidden'; end if;
+  if not public.is_manager(p_rid) then raise exception 'forbidden'; end if;
   return coalesce((select jsonb_agg(jsonb_build_object('user_id', s.user_id, 'email', u.email, 'role', s.role) order by s.created_at)
     from public.staff s join auth.users u on u.id = s.user_id where s.restaurant_id = p_rid), '[]'::jsonb);
 end $$;
@@ -450,10 +444,10 @@ grant execute on function public.get_menu(text) to anon, authenticated;
 grant execute on function public.create_order(text, jsonb, text, text, text, uuid) to anon, authenticated;
 grant execute on function public.guest_orders(uuid) to anon, authenticated;
 revoke execute on function public.advance_order(uuid), public.cancel_order(uuid), public.mark_paid(uuid), public.my_context(),
-  public.claim_platform_admin(), public.list_staff(uuid), public.add_staff(uuid, text, text), public.remove_staff(uuid, uuid),
+  public.list_staff(uuid), public.add_staff(uuid, text, text), public.remove_staff(uuid, uuid),
   public.issue_tags(uuid, int), public.admin_staff() from public, anon;
 grant execute on function public.advance_order(uuid), public.cancel_order(uuid), public.mark_paid(uuid), public.my_context(),
-  public.claim_platform_admin(), public.list_staff(uuid), public.add_staff(uuid, text, text), public.remove_staff(uuid, uuid),
+  public.list_staff(uuid), public.add_staff(uuid, text, text), public.remove_staff(uuid, uuid),
   public.issue_tags(uuid, int), public.admin_staff() to authenticated;
 
 -- ============ ЗАКАЗЫ В РЕАЛЬНОМ ВРЕМЕНИ ============

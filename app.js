@@ -93,6 +93,8 @@ const configured = /^https:\/\/[^/]+/.test(CFG.SUPABASE_URL || "") && !/YOUR/i.t
 const sb = configured ? window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY) : null;
 $("boot") && ($("boot").innerHTML = emblem());
 
+const POLICY_VERSION = "2026-11-25";
+let RECOVERY = /type=recovery/.test(location.hash);
 let timers = [];
 function clearTimers() { timers.forEach(clearInterval); timers = []; }
 let channel = null;
@@ -106,6 +108,7 @@ function route() {
   const m = path.match(/\/t\/([A-Za-z0-9]{6,12})$/);
   const tag = m ? m[1] : qs.get("t");
   if (tag) return Guest(tag.toUpperCase());
+  if (/\/privacy$/.test(path)) return Privacy();
   if (/\/cabinet$/.test(path) || qs.has("cabinet")) return withAuth("Кабинет ресторана", Cabinet);
   if (/\/admin$/.test(path) || qs.has("admin")) return withAuth("Панель Dastorkon", Admin);
   return Landing();
@@ -120,13 +123,70 @@ function Landing() {
   mount(`<div class="land gut stag"><span class="emb" style="--i:0">${emblem()}</span><h1 style="--i:1">Dastorkon</h1>
   <p style="--i:2">Гость прикладывает телефон к табличке на столе, смотрит меню и заказывает. Ресторан сразу получает заказ с номером стола.</p>
   <div class="row" style="--i:3;justify-content:center"><a class="btn primary" href="/cabinet">Кабинет ресторана</a></div>
-  ${CFG.SUPPORT ? `<p class="note" style="--i:4">Подключение и поддержка: ${esc(CFG.SUPPORT)}</p>` : ""}</div>`);
+  ${CFG.SUPPORT ? `<p class="note" style="--i:4">Подключение и поддержка: ${esc(CFG.SUPPORT)}</p>` : ""}
+  <p class="note" style="--i:5"><a href="/privacy">Политика конфиденциальности</a></p></div>`);
+}
+
+/* ================= ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ ================= */
+function Privacy() {
+  cur = { acts: {} };
+  const L = window.DASTORKON_LEGAL || {};
+  const contact = L.email ? esc(L.email) + (L.phone ? " или по телефону " + esc(L.phone) : "") : L.phone ? "по телефону " + esc(L.phone) : "";
+  document.title = "Политика конфиденциальности · Dastorkon";
+  mount(`<div class="topbar"><div class="in gut"><a class="brand" href="/"><span class="emb">${emblem()}</span>Dastorkon</a></div></div>
+  <article class="ws gut" style="max-width:780px;gap:14px;line-height:1.6">
+  <h1 style="font-size:32px;letter-spacing:-.02em">Политика конфиденциальности</h1>
+  <p class="note">Редакция от ${POLICY_VERSION.split("-").reverse().join(".")}. Действует для сайта ${esc(location.host)} и сервиса Dastorkon.</p>
+  <h2 style="font-size:20px;margin-top:10px">1. Кто обрабатывает данные</h2>
+  <p>Сервис Dastorkon предоставляет ${L.operator ? esc(L.operator) : "индивидуальный предприниматель, зарегистрированный в Кыргызской Республике"}${L.inn ? ", ИНН " + esc(L.inn) : ""}${L.address ? ", адрес: " + esc(L.address) : ""}.
+  По вопросам персональных данных: ${contact}.</p>
+  <p>Dastorkon — сервис электронного меню и заказов со стола для кафе и ресторанов. Заказ, который гость оформляет через Dastorkon, адресован ресторану, в котором гость находится. Данные гостей мы обрабатываем по поручению этого ресторана и только для выполнения заказа.</p>
+  <h2 style="font-size:20px;margin-top:10px">2. Какие данные мы обрабатываем</h2>
+  <p><b>Гости ресторанов.</b> Для заказа не нужна регистрация. Мы не спрашиваем имя, телефон или email. Мы обрабатываем: блюда в заказе, номер стола, время заказа, комментарий к заказу (если вы его написали), статус оплаты официанту, а также случайный идентификатор устройства, который хранится в вашем браузере и позволяет показать статус ваших заказов. Хостинг-провайдеры автоматически записывают технические данные: IP-адрес, тип браузера, время запроса.</p>
+  <p>Пожалуйста, не пишите в комментарии к заказу личные сведения, которые не нужны ресторану.</p>
+  <p><b>Сотрудники ресторанов и администраторы.</b> Email, пароль (хранится только в виде необратимого хэша, мы его не видим), роль в ресторане, дата и версия согласия с этой политикой, действия в кабинете (изменения меню, статусы заказов).</p>
+  <p><b>Рестораны.</b> Название, меню, цены, фото, столы и NFC-метки, тариф и срок подписки.</p>
+  <h2 style="font-size:20px;margin-top:10px">3. Зачем и на каком основании</h2>
+  <p>Данные гостей — чтобы передать заказ ресторану и показать гостю его статус. Основание: выполнение заказа, который гость оформляет в ресторане.</p>
+  <p>Данные сотрудников — чтобы дать доступ к кабинету ресторана, защищать аккаунт и восстанавливать пароль. Основание: согласие, которое сотрудник даёт при регистрации, и договор между Dastorkon и рестораном.</p>
+  <p>Мы не продаём данные, не показываем рекламу и не подключаем рекламные и аналитические счётчики.</p>
+  <h2 style="font-size:20px;margin-top:10px">4. Кому передаются данные</h2>
+  <p>Ресторану, в котором оформлен заказ: он видит состав заказа, стол, комментарий и время. Рестораны не видят данные друг друга.</p>
+  <p>Подрядчикам, без которых сервис не работает:</p>
+  <ul style="margin:0;padding-left:22px">
+    <li>Supabase Inc. — база данных, вход в кабинет, хранение фото меню. Серверы находятся в Ирландии (Европейский союз).</li>
+    <li>Netlify Inc. — размещение сайта и доставка его страниц через сеть серверов в разных странах.</li>
+    <li>jsDelivr — загрузка программных библиотек сайта; Google Fonts — загрузка шрифтов. Эти сервисы получают IP-адрес и сведения о браузере при открытии сайта.</li>
+  </ul>
+  <h2 style="font-size:20px;margin-top:10px">5. Хранение за пределами Кыргызстана</h2>
+  <p>Данные хранятся и обрабатываются на серверах за пределами Кыргызской Республики (Европейский союз и другие страны размещения подрядчиков). Для гостей это необходимо для выполнения заказа. Сотрудники дают на это отдельное согласие при регистрации.</p>
+  <h2 style="font-size:20px;margin-top:10px">6. Сколько мы храним данные</h2>
+  <ul style="margin:0;padding-left:22px">
+    <li>Связь заказа с устройством гостя — 2 дня, затем удаляется автоматически.</li>
+    <li>Комментарий к заказу — 30 дней, затем удаляется автоматически.</li>
+    <li>Состав, сумма и время заказа без указания гостя — пока действует договор с рестораном и 1 год после его окончания, для учёта ресторана.</li>
+    <li>Аккаунт сотрудника — пока у него есть доступ к ресторану или до удаления по запросу.</li>
+    <li>Технические журналы — в сроки, установленные хостинг-провайдерами.</li>
+  </ul>
+  <h2 style="font-size:20px;margin-top:10px">7. Что хранится в вашем браузере</h2>
+  <p>Мы не используем рекламные cookie. В памяти браузера хранятся корзина, выбранный язык, случайный идентификатор устройства для статуса заказов, а у сотрудников — данные входа в кабинет. Их можно удалить, очистив данные сайта в браузере.</p>
+  <h2 style="font-size:20px;margin-top:10px">8. Как мы защищаем данные</h2>
+  <p>Соединение с сайтом шифруется (HTTPS). Доступ разграничен: каждый ресторан видит только свои заказы и меню, сотрудник видит только рестораны, к которым его подключили. Пароли хранятся в виде хэша. Мы собираем минимум данных и автоматически удаляем то, что больше не нужно.</p>
+  <h2 style="font-size:20px;margin-top:10px">9. Ваши права</h2>
+  <p>Вы можете узнать, какие ваши данные мы обрабатываем, получить их копию, исправить, удалить, отозвать согласие или возразить против обработки. Обратитесь ${L.email ? "на " : ""}${contact}. На возражения отвечаем в течение 7 рабочих дней, данные по обоснованному запросу удаляем без задержки. Если заказ гостя нужно удалить, укажите ресторан, стол и примерное время заказа.</p>
+  <p>Вы также вправе обратиться в уполномоченный государственный орган Кыргызской Республики по защите персональных данных.</p>
+  <h2 style="font-size:20px;margin-top:10px">10. Изменения политики</h2>
+  <p>Мы можем обновлять эту политику. Новая редакция публикуется на этой странице с датой. Если изменения касаются согласия сотрудников, мы попросим подтвердить его заново.</p>
+  <p style="margin-top:12px"><a class="btn" href="/" data-a="back">Назад</a></p>
+  </article>`);
+  cur.acts.back = (v, b, e) => { e.preventDefault(); if (history.length > 1) history.back(); else location.href = "/"; };
 }
 
 /* ================= ВХОД ================= */
 async function withAuth(title, Module) {
   mount(`<div class="center"><div class="box"><span class="spinner emb">${emblem()}</span></div></div>`, false);
   const { data: { session } } = await sb.auth.getSession();
+  if (RECOVERY && session) return authView("Смена пароля", "newpw");
   if (!session) return authView(title);
   let ctx;
   try { ctx = await rpc("my_context"); } catch (e) { return fatal(errMsg(e), true); }
@@ -137,33 +197,45 @@ function fatal(msg, retry) {
   mount(`<div class="center"><div class="box"><span class="emb" style="width:60px;height:60px">${emblem()}</span><p>${esc(msg)}</p>
   <div class="row" style="justify-content:center">${retry ? `<button type="button" class="btn primary" data-a="retry">Попробовать снова</button>` : ""}<button type="button" class="btn" data-a="out">Выйти</button></div></div></div>`);
 }
-function authView(title) {
-  let mode = "in";
-  const draw = (msg, err) => mount(`<form class="auth gut stag" data-submit="go" novalidate>
-    <div class="head" style="--i:0"><span class="emb">${emblem()}</span><h1>${esc(title)}</h1><p class="note">${mode === "in" ? "Войдите, чтобы продолжить" : "Создайте аккаунт. Потом администратор привяжет его к ресторану."}</p></div>
+function authView(title, preset) {
+  let mode = preset || "in";
+  const sub = { in: "Войдите, чтобы продолжить", up: "Создайте аккаунт. Потом администратор привяжет его к ресторану.", forgot: "Введите email, и мы пришлём ссылку для смены пароля.", newpw: "Придумайте новый пароль." };
+  const btn = { in: "Войти", up: "Создать аккаунт", forgot: "Отправить ссылку", newpw: "Сохранить пароль" };
+  const draw = (msg, err) => { const keep = { em: $("em") ? $("em").value : "", pw: $("pw") ? $("pw").value : "" }; mount(`<form class="auth gut stag" data-submit="go" novalidate>
+    <div class="head" style="--i:0"><span class="emb">${emblem()}</span><h1>${esc(title)}</h1><p class="note">${sub[mode]}</p></div>
     ${msg ? `<div class="${err ? "err" : "card"}" style="--i:1">${esc(msg)}</div>` : ""}
-    <div class="fld" style="--i:1"><label for="em">Email</label><input type="email" id="em" autocomplete="email" required></div>
-    <div class="fld" style="--i:2"><label for="pw">Пароль</label><input type="password" id="pw" autocomplete="${mode === "in" ? "current-password" : "new-password"}" minlength="8" required></div>
-    <button type="submit" class="btn primary block" style="--i:3" id="goBtn">${mode === "in" ? "Войти" : "Создать аккаунт"}</button>
-    <button type="button" class="btn block" style="--i:4" data-a="mode">${mode === "in" ? "У меня нет аккаунта" : "У меня уже есть аккаунт"}</button>
-  </form>`);
+    ${mode !== "newpw" ? `<div class="fld" style="--i:1"><label for="em">Email</label><input type="email" id="em" autocomplete="email" required></div>` : ""}
+    ${mode !== "forgot" ? `<div class="fld" style="--i:2"><label for="pw">${mode === "newpw" ? "Новый пароль" : "Пароль"}</label><input type="password" id="pw" autocomplete="${mode === "in" ? "current-password" : "new-password"}" minlength="8" required></div>` : ""}
+    ${mode === "up" ? `<label class="chk" style="--i:3;align-items:flex-start;border-radius:12px;padding:10px 12px;font-weight:500;line-height:1.4"><input type="checkbox" id="pd" style="margin-top:3px;flex:none"><span>Я принимаю <a href="/privacy" target="_blank" rel="noopener">Политику конфиденциальности</a> и даю согласие на обработку моих персональных данных, в том числе на их хранение на серверах за пределами Кыргызстана</span></label>` : ""}
+    <button type="submit" class="btn primary block" style="--i:3" id="goBtn">${btn[mode]}</button>
+    ${mode === "in" ? `<button type="button" class="btn block" style="--i:4" data-a="mode" data-v="forgot">Забыли пароль?</button>` : ""}
+    ${mode !== "newpw" ? `<button type="button" class="btn block" style="--i:4" data-a="mode" data-v="${mode === "in" ? "up" : "in"}">${mode === "in" ? "У меня нет аккаунта" : "Вернуться ко входу"}</button>` : ""}
+    <p class="note" style="--i:5;text-align:center"><a href="/privacy">Политика конфиденциальности</a></p>
+  </form>`); if ($("em")) $("em").value = keep.em; if ($("pw")) $("pw").value = keep.pw; };
   cur = { acts: {
-    mode: () => { mode = mode === "in" ? "up" : "in"; draw(); },
+    mode: v => { mode = v; draw(); },
     go: async () => {
-      const email = $("em").value.trim(), password = $("pw").value;
-      if (!/^\S+@\S+\.\S+$/.test(email)) return draw("Введите email полностью, например name@mail.kg", true);
-      if (password.length < 8) return draw("Пароль должен быть не короче 8 символов", true);
+      const email = $("em") ? $("em").value.trim() : "", password = $("pw") ? $("pw").value : "";
+      if (mode !== "newpw" && !/^\S+@\S+\.\S+$/.test(email)) return draw("Введите email полностью, например name@mail.kg", true);
+      if (mode !== "forgot" && password.length < 8) return draw("Пароль должен быть не короче 8 символов", true);
+      if (mode === "up" && !$("pd").checked) return draw("Чтобы создать аккаунт, отметьте согласие с Политикой конфиденциальности.", true);
       $("goBtn").disabled = true;
       try {
         if (mode === "in") {
           const { error } = await sb.auth.signInWithPassword({ email, password }); if (error) throw error; route();
-        } else {
-          const { data, error } = await sb.auth.signUp({ email, password, options: { emailRedirectTo: location.origin + location.pathname } }); if (error) throw error;
+        } else if (mode === "up") {
+          const { data, error } = await sb.auth.signUp({ email, password, options: { emailRedirectTo: location.origin + location.pathname, data: { pd_consent: true, pd_consent_at: new Date().toISOString(), policy_version: POLICY_VERSION } } }); if (error) throw error;
           if (data.session) route(); else { mode = "in"; draw("Мы отправили письмо на " + email + ". Откройте ссылку из письма, затем войдите."); }
+        } else if (mode === "forgot") {
+          const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname }); if (error) throw error;
+          mode = "in"; draw("Если такой аккаунт есть, мы отправили на " + email + " ссылку для смены пароля.");
+        } else {
+          const { error } = await sb.auth.updateUser({ password }); if (error) throw error;
+          RECOVERY = false; history.replaceState(null, "", location.pathname); toast("Пароль изменён"); route();
         }
       } catch (e) {
         const m = String(e.message || "");
-        draw(/invalid login/i.test(m) ? "Неверный email или пароль." : /not confirmed/i.test(m) ? "Подтвердите email по ссылке из письма." : /already registered/i.test(m) ? "Такой email уже зарегистрирован. Войдите." : errMsg(e), true);
+        draw(/invalid login/i.test(m) ? "Неверный email или пароль." : /not confirmed/i.test(m) ? "Подтвердите email по ссылке из письма." : /already registered/i.test(m) ? "Такой email уже зарегистрирован. Войдите." : /should be different/i.test(m) ? "Новый пароль должен отличаться от старого." : /rate limit|too many|security purposes/i.test(m) ? "Слишком много попыток. Подождите минуту и попробуйте снова." : errMsg(e), true);
       }
     }
   } };
@@ -179,13 +251,13 @@ async function logout() { await sb.auth.signOut(); route(); }
 const GT = {
 ru:{open:"Открыть меню",table:"Стол",welcome:"Добро пожаловать",search:"Поиск блюда",all:"Все",cart:"Корзина",empty:"Корзина пуста",comment:"Комментарий к заказу",commentPh:"Например: без лука, принести всё вместе",total:"Итого",toPay:"Перейти к оплате",payT:"Оплата",waiter:"Официанту",waiterD:"Наличными, картой или по QR, когда принесут счёт",place:"Отправить заказ",placing:"Отправляем…",doneT:"Заказ принят",no:"Заказ №",method:"Оплата",status:"Статус заказа",track:"Отследить заказ",more:"Дозаказать",history:"Мои заказы",bill:"Общий счёт",paid:"Оплачен",unpaid:"Не оплачен",ing:"Состав",al:"Аллергены",por:"Порция",addons:"Добавки",off:"Нет в наличии",add:"Добавить",cur:"сом",
  accepted:"Принят",cooking:"Готовится",ready:"Готов",served:"Подан",cancelled:"Отменён",acceptedD:"Ресторан получил заказ",cookingD:"Кухня готовит ваши блюда",readyD:"Блюда готовы к подаче",servedD:"Приятного аппетита",cancelledD:"Заказ отменён рестораном",
- gone:"Этих блюд уже нет в наличии, мы убрали их из корзины:",nothing:"Ничего не найдено",tableOff:"Этот стол сейчас не принимает заказы. Позовите официанта.",net:"Нет связи. Проверьте интернет и нажмите ещё раз, заказ не задвоится.",notFound:"Эта табличка пока не привязана к столу. Позовите официанта.",restOff:"Меню временно недоступно. Позовите официанта.",retry:"Попробовать снова",loading:"Загружаем меню…",fail:"Не удалось отправить заказ. Позовите официанта."},
+ gone:"Этих блюд уже нет в наличии, мы убрали их из корзины:",nothing:"Ничего не найдено",tableOff:"Этот стол сейчас не принимает заказы. Позовите официанта.",net:"Нет связи. Проверьте интернет и нажмите ещё раз, заказ не задвоится.",notFound:"Эта табличка пока не привязана к столу. Позовите официанта.",restOff:"Меню временно недоступно. Позовите официанта.",retry:"Попробовать снова",loading:"Загружаем меню…",fail:"Не удалось отправить заказ. Позовите официанта.",privacy:"Политика конфиденциальности",payNote:"Заказ передаётся ресторану. Мы не просим ваше имя и телефон.",tooFast:"Слишком много заказов подряд. Подождите минуту или позовите официанта."},
 ky:{open:"Менюну ачуу",table:"Үстөл",welcome:"Кош келиңиздер",search:"Тамак издөө",all:"Баары",cart:"Себет",empty:"Себет бош",comment:"Буйрутмага комментарий",commentPh:"Мисалы: пиязсыз",total:"Жыйынтыгы",toPay:"Төлөөгө өтүү",payT:"Төлөө",waiter:"Официантка",waiterD:"Эсеп келгенде накталай, карта же QR менен",place:"Буйрутма жөнөтүү",placing:"Жөнөтүлүүдө…",doneT:"Буйрутма кабыл алынды",no:"Буйрутма №",method:"Төлөө",status:"Буйрутманын абалы",track:"Буйрутманы көзөмөлдөө",more:"Дагы буйрутма берүү",history:"Менин буйрутмаларым",bill:"Жалпы эсеп",paid:"Төлөндү",unpaid:"Төлөнө элек",ing:"Курамы",al:"Аллергендер",por:"Порция",addons:"Кошумчалар",off:"Азыр жок",add:"Кошуу",cur:"сом",
  accepted:"Кабыл алынды",cooking:"Даярдалууда",ready:"Даяр",served:"Берилди",cancelled:"Жокко чыгарылды",acceptedD:"Ресторан буйрутманы алды",cookingD:"Ашкана тамакты даярдап жатат",readyD:"Тамак даяр",servedD:"Тамагыңыз таттуу болсун",cancelledD:"Ресторан буйрутманы жокко чыгарды",
- gone:"Бул тамактар азыр жок, себеттен алынды:",nothing:"Эч нерсе табылган жок",tableOff:"Бул үстөл азыр буйрутма кабыл албайт. Официантты чакырыңыз.",net:"Байланыш жок. Интернетти текшерип, кайра басыңыз, буйрутма кайталанбайт.",notFound:"Бул белги азырынча үстөлгө байланган эмес. Официантты чакырыңыз.",restOff:"Меню убактылуу жеткиликсиз. Официантты чакырыңыз.",retry:"Кайра аракет кылуу",loading:"Меню жүктөлүүдө…",fail:"Буйрутма жөнөтүлгөн жок. Официантты чакырыңыз."},
+ gone:"Бул тамактар азыр жок, себеттен алынды:",nothing:"Эч нерсе табылган жок",tableOff:"Бул үстөл азыр буйрутма кабыл албайт. Официантты чакырыңыз.",net:"Байланыш жок. Интернетти текшерип, кайра басыңыз, буйрутма кайталанбайт.",notFound:"Бул белги азырынча үстөлгө байланган эмес. Официантты чакырыңыз.",restOff:"Меню убактылуу жеткиликсиз. Официантты чакырыңыз.",retry:"Кайра аракет кылуу",loading:"Меню жүктөлүүдө…",fail:"Буйрутма жөнөтүлгөн жок. Официантты чакырыңыз.",privacy:"Купуялуулук саясаты",payNote:"Буйрутма ресторанга жөнөтүлөт. Биз атыңызды жана телефонуңузду сурабайбыз.",tooFast:"Буйрутмалар өтө көп. Бир мүнөт күтүңүз же официантты чакырыңыз."},
 en:{open:"Open menu",table:"Table",welcome:"Welcome",search:"Search dishes",all:"All",cart:"Cart",empty:"Your cart is empty",comment:"Order comment",commentPh:"E.g. no onion, bring everything together",total:"Total",toPay:"Go to payment",payT:"Payment",waiter:"Pay the waiter",waiterD:"Cash, card or QR when the bill arrives",place:"Send order",placing:"Sending…",doneT:"Order accepted",no:"Order #",method:"Payment",status:"Order status",track:"Track order",more:"Order more",history:"My orders",bill:"Total bill",paid:"Paid",unpaid:"Unpaid",ing:"Ingredients",al:"Allergens",por:"Portion",addons:"Add-ons",off:"Sold out",add:"Add",cur:"KGS",
  accepted:"Accepted",cooking:"Cooking",ready:"Ready",served:"Served",cancelled:"Cancelled",acceptedD:"The restaurant has your order",cookingD:"The kitchen is preparing your dishes",readyD:"Your dishes are ready to serve",servedD:"Enjoy your meal",cancelledD:"The restaurant cancelled this order",
- gone:"These dishes are sold out and were removed from your cart:",nothing:"Nothing found",tableOff:"This table is not taking orders right now. Please call a waiter.",net:"No connection. Check the internet and tap again, the order will not be duplicated.",notFound:"This tag is not linked to a table yet. Please call a waiter.",restOff:"The menu is temporarily unavailable. Please call a waiter.",retry:"Try again",loading:"Loading menu…",fail:"The order was not sent. Please call a waiter."}
+ gone:"These dishes are sold out and were removed from your cart:",nothing:"Nothing found",tableOff:"This table is not taking orders right now. Please call a waiter.",net:"No connection. Check the internet and tap again, the order will not be duplicated.",notFound:"This tag is not linked to a table yet. Please call a waiter.",restOff:"The menu is temporarily unavailable. Please call a waiter.",retry:"Try again",loading:"Loading menu…",fail:"The order was not sent. Please call a waiter.",privacy:"Privacy policy",payNote:"Your order goes to the restaurant. We don\u2019t ask for your name or phone.",tooFast:"Too many orders in a row. Wait a minute or call a waiter."}
 };
 const AL = { gluten: { ru: "Глютен", ky: "Глютен", en: "Gluten" }, milk: { ru: "Молоко", ky: "Сүт", en: "Milk" }, egg: { ru: "Яйца", ky: "Жумуртка", en: "Egg" }, nuts: { ru: "Орехи", ky: "Жаңгак", en: "Nuts" }, fish: { ru: "Рыба", ky: "Балык", en: "Fish" }, soy: { ru: "Соя", ky: "Соя", en: "Soy" }, sesame: { ru: "Кунжут", ky: "Кунжут", en: "Sesame" } };
 const ST = ["accepted", "cooking", "ready", "served"];
@@ -227,6 +299,7 @@ function Guest(tag) {
       <div class="table-card" style="--i:2"><small>${t("table")}</small><b>${M.table.number}</b></div>
       <button type="button" class="btn primary block" style="--i:3" data-a="go" data-v="menu">${t("open")}</button>
       ${myOrders().length ? `<button type="button" class="btn block" style="--i:4" data-a="go" data-v="history">${t("history")}</button>` : ""}
+      <a class="note" style="--i:5" href="/privacy">${t("privacy")}</a>
     </div></div>`;
   }
   function dishList() {
@@ -277,7 +350,8 @@ function Guest(tag) {
     ${U.err ? `<div class="err">${esc(U.err)}</div>` : ""}
     <div style="--i:0"><div class="opt" aria-pressed="true"><span class="dot"></span><span><b>${t("waiter")}</b><small>${t("waiterD")}</small></span></div></div>
     <div class="sum" style="--i:1"><span>${t("total")}</span><b>${money(cartTotal())}</b></div>
-    <button type="button" class="btn primary block" style="--i:2" id="placeBtn" data-a="place" ${U.busy ? "disabled" : ""}>${U.busy ? t("placing") : t("place")}</button></div></div>`;
+    <button type="button" class="btn primary block" style="--i:2" id="placeBtn" data-a="place" ${U.busy ? "disabled" : ""}>${U.busy ? t("placing") : t("place")}</button>
+    <p class="note" style="--i:3;text-align:center">${t("payNote")} <a href="/privacy">${t("privacy")}</a></p></div></div>`;
   }
   function sDone() {
     const o = O[G.cur]; if (!o) return sMenu();
@@ -362,7 +436,7 @@ function Guest(tag) {
         await loadMenu(true);
         U.err = t("gone") + " " + names.join(", "); G.screen = "cart"; save(); render(true); return;
       }
-      U.err = res.code === "table_off" ? t("tableOff") : res.code === "empty" ? t("empty") : t("fail");
+      U.err = res.code === "table_off" ? t("tableOff") : res.code === "too_fast" ? t("tooFast") : res.code === "empty" ? t("empty") : t("fail");
       render(false); return;
     }
     resetIdem();
@@ -430,7 +504,7 @@ function Cabinet(ctx) {
     cur = { acts: { logout } };
     mount(topbar(ctx) + `<div class="center"><div class="box"><span class="emb" style="width:64px;height:64px">${emblem()}</span><h1 style="font-size:22px">Аккаунт ещё не привязан к ресторану</h1>
     <p class="note" style="font-size:15px">Сообщите администратору Dastorkon ваш email: <b>${esc(ctx.email)}</b>. После привязки обновите страницу.</p>
-    ${ctx.is_admin || !ctx.admins_exist ? `<a class="btn primary" href="/admin">Открыть панель платформы</a>` : ""}</div></div>`);
+    ${ctx.is_admin ? `<a class="btn primary" href="/admin">Открыть панель платформы</a>` : ""}</div></div>`);
     return;
   }
   const qr = new URLSearchParams(location.search).get("r");
@@ -722,10 +796,9 @@ function Cabinet(ctx) {
 /* ================= ПАНЕЛЬ ПЛАТФОРМЫ ================= */
 function Admin(ctx) {
   if (!ctx.is_admin) {
-    cur = { acts: { logout, claim: async () => { try { const ok = await rpc("claim_platform_admin"); if (ok) { toast("Вы администратор платформы"); route(); } else toast("Администратор уже назначен."); } catch (e) { toast(errMsg(e)); } } } };
+    cur = { acts: { logout } };
     mount(topbar(ctx) + `<div class="center"><div class="box"><span class="emb" style="width:64px;height:64px">${emblem()}</span>
-    ${ctx.admins_exist ? `<h1 style="font-size:22px">Нет доступа</h1><p class="note">Эта страница только для администраторов Dastorkon.</p><a class="btn" href="/cabinet">Кабинет ресторана</a>`
-      : `<h1 style="font-size:22px">Назначьте администратора платформы</h1><p class="note" style="font-size:15px">Администратора ещё нет. Первый, кто нажмёт кнопку, получит полный доступ. Сделайте это со своего аккаунта: <b>${esc(ctx.email)}</b>.</p><button type="button" class="btn primary" data-a="claim">Стать администратором</button>`}</div></div>`);
+    <h1 style="font-size:22px">Нет доступа</h1><p class="note">Эта страница только для администраторов Dastorkon.</p><a class="btn" href="/cabinet">Кабинет ресторана</a></div></div>`);
     return;
   }
   const D = { rests: [], tags: [], tables: [], staff: { admins: [], staff: [] } };
@@ -823,6 +896,9 @@ function Admin(ctx) {
   })();
 }
 
-if (sb) sb.auth.onAuthStateChange(ev => { if (ev === "SIGNED_OUT") route(); });
+if (sb) sb.auth.onAuthStateChange(ev => {
+  if (ev === "SIGNED_OUT") route();
+  if (ev === "PASSWORD_RECOVERY") { RECOVERY = true; clearTimers(); dropChannel(); closeSheet(); authView("Смена пароля", "newpw"); }
+});
 route();
 })();
