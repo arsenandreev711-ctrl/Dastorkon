@@ -251,13 +251,16 @@ async function logout() { await sb.auth.signOut(); route(); }
 const GT = {
 ru:{open:"Открыть меню",table:"Стол",welcome:"Добро пожаловать",search:"Поиск блюда",all:"Все",cart:"Корзина",empty:"Корзина пуста",comment:"Комментарий к заказу",commentPh:"Например: без лука, принести всё вместе",total:"Итого",toPay:"Перейти к оплате",payT:"Оплата",waiter:"Официанту",waiterD:"Наличными, картой или по QR, когда принесут счёт",place:"Отправить заказ",placing:"Отправляем…",doneT:"Заказ принят",no:"Заказ №",method:"Оплата",status:"Статус заказа",track:"Отследить заказ",more:"Дозаказать",history:"Мои заказы",bill:"Общий счёт",paid:"Оплачен",unpaid:"Не оплачен",ing:"Состав",al:"Аллергены",por:"Порция",addons:"Добавки",off:"Нет в наличии",add:"Добавить",cur:"сом",
  accepted:"Принят",cooking:"Готовится",ready:"Готов",served:"Подан",cancelled:"Отменён",acceptedD:"Ресторан получил заказ",cookingD:"Кухня готовит ваши блюда",readyD:"Блюда готовы к подаче",servedD:"Приятного аппетита",cancelledD:"Заказ отменён рестораном",
- gone:"Этих блюд уже нет в наличии, мы убрали их из корзины:",nothing:"Ничего не найдено",tableOff:"Этот стол сейчас не принимает заказы. Позовите официанта.",net:"Нет связи. Проверьте интернет и нажмите ещё раз, заказ не задвоится.",notFound:"Эта табличка пока не привязана к столу. Позовите официанта.",restOff:"Меню временно недоступно. Позовите официанта.",retry:"Попробовать снова",loading:"Загружаем меню…",fail:"Не удалось отправить заказ. Позовите официанта.",privacy:"Политика конфиденциальности",payNote:"Заказ передаётся ресторану. Мы не просим ваше имя и телефон.",tooFast:"Слишком много заказов подряд. Подождите минуту или позовите официанта."},
+ gone:"Этих блюд уже нет в наличии, мы убрали их из корзины:",nothing:"Ничего не найдено",tableOff:"Этот стол сейчас не принимает заказы. Позовите официанта.",net:"Нет связи. Проверьте интернет и нажмите ещё раз, заказ не задвоится.",notFound:"Эта табличка пока не привязана к столу. Позовите официанта.",restOff:"Меню временно недоступно. Позовите официанта.",retry:"Попробовать снова",loading:"Загружаем меню…",fail:"Не удалось отправить заказ. Позовите официанта.",privacy:"Политика конфиденциальности",payNote:"Заказ передаётся ресторану. Мы не просим ваше имя и телефон.",tooFast:"Слишком много заказов подряд. Подождите минуту или позовите официанта.",
+ accT:"Подтверждение стола",accD:"Чтобы никто не мог заказать за ваш стол из дома, официант один раз подтверждает, что вы за столом.",ask:"Позвать официанта для подтверждения",or:"или",haveCode:"Есть код стола от друзей?",codePh:"4 цифры",join:"Войти по коду",waitT:"Ждём официанта",waitD:"Официант подойдёт и подтвердит стол. Можно пока выбирать блюда.",deniedD:"Официант не подтвердил стол. Позовите его, пожалуйста.",blockedD:"Слишком много неверных попыток. Попробуйте через 10 минут или позовите официанта.",wrong:"Неверный код. Осталось попыток: ",okT:"Стол подтверждён",codeT:"Код вашего стола",codeD:"Друзья за этим столом вводят этот код, чтобы заказывать вместе. Код перестанет работать, когда счёт будет оплачен.",codeShort:"для друзей за столом",cont:"Продолжить",noSession:"У этого стола ещё нет кода. Позовите официанта для подтверждения.",enterCode:"Введите 4 цифры кода"},
 ky:{open:"Менюну ачуу",table:"Үстөл",welcome:"Кош келиңиздер",search:"Тамак издөө",all:"Баары",cart:"Себет",empty:"Себет бош",comment:"Буйрутмага комментарий",commentPh:"Мисалы: пиязсыз",total:"Жыйынтыгы",toPay:"Төлөөгө өтүү",payT:"Төлөө",waiter:"Официантка",waiterD:"Эсеп келгенде накталай, карта же QR менен",place:"Буйрутма жөнөтүү",placing:"Жөнөтүлүүдө…",doneT:"Буйрутма кабыл алынды",no:"Буйрутма №",method:"Төлөө",status:"Буйрутманын абалы",track:"Буйрутманы көзөмөлдөө",more:"Дагы буйрутма берүү",history:"Менин буйрутмаларым",bill:"Жалпы эсеп",paid:"Төлөндү",unpaid:"Төлөнө элек",ing:"Курамы",al:"Аллергендер",por:"Порция",addons:"Кошумчалар",off:"Азыр жок",add:"Кошуу",cur:"сом",
  accepted:"Кабыл алынды",cooking:"Даярдалууда",ready:"Даяр",served:"Берилди",cancelled:"Жокко чыгарылды",acceptedD:"Ресторан буйрутманы алды",cookingD:"Ашкана тамакты даярдап жатат",readyD:"Тамак даяр",servedD:"Тамагыңыз таттуу болсун",cancelledD:"Ресторан буйрутманы жокко чыгарды",
- gone:"Бул тамактар азыр жок, себеттен алынды:",nothing:"Эч нерсе табылган жок",tableOff:"Бул үстөл азыр буйрутма кабыл албайт. Официантты чакырыңыз.",net:"Байланыш жок. Интернетти текшерип, кайра басыңыз, буйрутма кайталанбайт.",notFound:"Бул белги азырынча үстөлгө байланган эмес. Официантты чакырыңыз.",restOff:"Меню убактылуу жеткиликсиз. Официантты чакырыңыз.",retry:"Кайра аракет кылуу",loading:"Меню жүктөлүүдө…",fail:"Буйрутма жөнөтүлгөн жок. Официантты чакырыңыз.",privacy:"Купуялуулук саясаты",payNote:"Буйрутма ресторанга жөнөтүлөт. Биз атыңызды жана телефонуңузду сурабайбыз.",tooFast:"Буйрутмалар өтө көп. Бир мүнөт күтүңүз же официантты чакырыңыз."},
+ gone:"Бул тамактар азыр жок, себеттен алынды:",nothing:"Эч нерсе табылган жок",tableOff:"Бул үстөл азыр буйрутма кабыл албайт. Официантты чакырыңыз.",net:"Байланыш жок. Интернетти текшерип, кайра басыңыз, буйрутма кайталанбайт.",notFound:"Бул белги азырынча үстөлгө байланган эмес. Официантты чакырыңыз.",restOff:"Меню убактылуу жеткиликсиз. Официантты чакырыңыз.",retry:"Кайра аракет кылуу",loading:"Меню жүктөлүүдө…",fail:"Буйрутма жөнөтүлгөн жок. Официантты чакырыңыз.",privacy:"Купуялуулук саясаты",payNote:"Буйрутма ресторанга жөнөтүлөт. Биз атыңызды жана телефонуңузду сурабайбыз.",tooFast:"Буйрутмалар өтө көп. Бир мүнөт күтүңүз же официантты чакырыңыз.",
+ accT:"Үстөлдү ырастоо",accD:"Сиздин үстөлгө үйдөн эч ким буйрутма бере албашы үчүн официант бир жолу үстөлдө отурганыңызды ырастайт.",ask:"Ырастоо үчүн официантты чакыруу",or:"же",haveCode:"Досторуңуздан үстөлдүн коду барбы?",codePh:"4 сан",join:"Код менен кирүү",waitT:"Официантты күтүп жатабыз",waitD:"Официант келип үстөлдү ырастайт. Азырынча тамак тандай берсеңиз болот.",deniedD:"Официант үстөлдү ырастаган жок. Аны чакырыңыз.",blockedD:"Ката аракеттер өтө көп. 10 мүнөттөн кийин кайталаңыз же официантты чакырыңыз.",wrong:"Код туура эмес. Калган аракеттер: ",okT:"Үстөл ырасталды",codeT:"Үстөлүңүздүн коду",codeD:"Ушул үстөлдөгү досторуңуз бул кодду киргизип, чогуу буйрутма бере алышат. Эсеп төлөнгөндө код иштебей калат.",codeShort:"үстөлдөгү досторуңуз үчүн",cont:"Улантуу",noSession:"Бул үстөлдүн азырынча коду жок. Ырастоо үчүн официантты чакырыңыз.",enterCode:"Коддун 4 санын киргизиңиз"},
 en:{open:"Open menu",table:"Table",welcome:"Welcome",search:"Search dishes",all:"All",cart:"Cart",empty:"Your cart is empty",comment:"Order comment",commentPh:"E.g. no onion, bring everything together",total:"Total",toPay:"Go to payment",payT:"Payment",waiter:"Pay the waiter",waiterD:"Cash, card or QR when the bill arrives",place:"Send order",placing:"Sending…",doneT:"Order accepted",no:"Order #",method:"Payment",status:"Order status",track:"Track order",more:"Order more",history:"My orders",bill:"Total bill",paid:"Paid",unpaid:"Unpaid",ing:"Ingredients",al:"Allergens",por:"Portion",addons:"Add-ons",off:"Sold out",add:"Add",cur:"KGS",
  accepted:"Accepted",cooking:"Cooking",ready:"Ready",served:"Served",cancelled:"Cancelled",acceptedD:"The restaurant has your order",cookingD:"The kitchen is preparing your dishes",readyD:"Your dishes are ready to serve",servedD:"Enjoy your meal",cancelledD:"The restaurant cancelled this order",
- gone:"These dishes are sold out and were removed from your cart:",nothing:"Nothing found",tableOff:"This table is not taking orders right now. Please call a waiter.",net:"No connection. Check the internet and tap again, the order will not be duplicated.",notFound:"This tag is not linked to a table yet. Please call a waiter.",restOff:"The menu is temporarily unavailable. Please call a waiter.",retry:"Try again",loading:"Loading menu…",fail:"The order was not sent. Please call a waiter.",privacy:"Privacy policy",payNote:"Your order goes to the restaurant. We don\u2019t ask for your name or phone.",tooFast:"Too many orders in a row. Wait a minute or call a waiter."}
+ gone:"These dishes are sold out and were removed from your cart:",nothing:"Nothing found",tableOff:"This table is not taking orders right now. Please call a waiter.",net:"No connection. Check the internet and tap again, the order will not be duplicated.",notFound:"This tag is not linked to a table yet. Please call a waiter.",restOff:"The menu is temporarily unavailable. Please call a waiter.",retry:"Try again",loading:"Loading menu…",fail:"The order was not sent. Please call a waiter.",privacy:"Privacy policy",payNote:"Your order goes to the restaurant. We don\u2019t ask for your name or phone.",tooFast:"Too many orders in a row. Wait a minute or call a waiter.",
+ accT:"Table check",accD:"So that nobody can order to your table from home, the waiter confirms once that you are at the table.",ask:"Ask the waiter to confirm",or:"or",haveCode:"Got a table code from friends?",codePh:"4 digits",join:"Join with code",waitT:"Waiting for the waiter",waitD:"The waiter will come and confirm your table. You can keep choosing dishes.",deniedD:"The waiter did not confirm the table. Please call them.",blockedD:"Too many wrong tries. Try again in 10 minutes or call a waiter.",wrong:"Wrong code. Tries left: ",okT:"Table confirmed",codeT:"Your table code",codeD:"Friends at this table enter this code to order together. The code stops working once the bill is paid.",codeShort:"for friends at your table",cont:"Continue",noSession:"This table has no code yet. Ask the waiter to confirm it.",enterCode:"Enter the 4-digit code"}
 };
 const AL = { gluten: { ru: "Глютен", ky: "Глютен", en: "Gluten" }, milk: { ru: "Молоко", ky: "Сүт", en: "Milk" }, egg: { ru: "Яйца", ky: "Жумуртка", en: "Egg" }, nuts: { ru: "Орехи", ky: "Жаңгак", en: "Nuts" }, fish: { ru: "Рыба", ky: "Балык", en: "Fish" }, soy: { ru: "Соя", ky: "Соя", en: "Soy" }, sesame: { ru: "Кунжут", ky: "Кунжут", en: "Sesame" } };
 const ST = ["accepted", "cooking", "ready", "served"];
@@ -267,7 +270,7 @@ function Guest(tag) {
   let tok = store.get("nfc-guest-token"); if (!tok) { tok = uid(); store.set("nfc-guest-token", tok); }
   const navLang = (navigator.language || "ru").slice(0, 2);
   const G = Object.assign({ lang: navLang === "en" ? "en" : navLang === "ky" ? "ky" : "ru", screen: "welcome", cart: [], note: "", orders: [], cur: null }, store.get(KEY) || {});
-  const U = { cat: "all", q: "", busy: false, err: "", idem: store.get(KEY + "-idem"), sh: null };
+  const U = { cat: "all", q: "", busy: false, err: "", idem: store.get(KEY + "-idem"), sh: null, acc: null };
   let M = null; const O = {};
   const t = k => (GT[G.lang] || GT.ru)[k] ?? GT.ru[k] ?? k;
   const tr = o => o && typeof o === "object" ? (o[G.lang] || o.ru || o.ky || o.en || "") : (o || "");
@@ -281,6 +284,8 @@ function Guest(tag) {
   const cartCount = () => G.cart.reduce((s, l) => s + l.qty, 0);
   const qtyOf = id => G.cart.filter(l => l.itemId === id).reduce((s, l) => s + l.qty, 0);
   const myOrders = () => G.orders.map(id => O[id]).filter(Boolean);
+  const needAcc = () => !!(M && M.restaurant.table_guard) && !(U.acc && (U.acc.state === "member" || U.acc.state === "open"));
+  const codeLine = i => U.acc && U.acc.state === "member" ? `<p class="note" style="--i:${i};text-align:center">${t("codeT")}: <b style="letter-spacing:.2em;color:var(--ink,#121417)">${esc(U.acc.code)}</b> · ${t("codeShort")}</p>` : "";
   const payPill = o => o.paid ? `<span class="pill ok">${t("paid")}</span>` : `<span class="pill warn">${t("unpaid")}</span>`;
   function addLine(itemId, addons, qty) {
     const key = itemId + "|" + [...addons].sort().join(",");
@@ -298,6 +303,7 @@ function Guest(tag) {
       <div style="--i:1"><p class="note">${t("welcome")}</p><h1 class="w-name">${esc(r.name)}</h1>${tr(r.tagline) ? `<p class="w-tag">${esc(tr(r.tagline))}</p>` : ""}</div>
       <div class="table-card" style="--i:2"><small>${t("table")}</small><b>${M.table.number}</b></div>
       <button type="button" class="btn primary block" style="--i:3" data-a="go" data-v="menu">${t("open")}</button>
+      ${codeLine(4)}
       ${myOrders().length ? `<button type="button" class="btn block" style="--i:4" data-a="go" data-v="history">${t("history")}</button>` : ""}
       <a class="note" style="--i:5" href="/privacy">${t("privacy")}</a>
     </div></div>`;
@@ -351,7 +357,28 @@ function Guest(tag) {
     <div style="--i:0"><div class="opt" aria-pressed="true"><span class="dot"></span><span><b>${t("waiter")}</b><small>${t("waiterD")}</small></span></div></div>
     <div class="sum" style="--i:1"><span>${t("total")}</span><b>${money(cartTotal())}</b></div>
     <button type="button" class="btn primary block" style="--i:2" id="placeBtn" data-a="place" ${U.busy ? "disabled" : ""}>${U.busy ? t("placing") : t("place")}</button>
-    <p class="note" style="--i:3;text-align:center">${t("payNote")} <a href="/privacy">${t("privacy")}</a></p></div></div>`;
+    ${codeLine(3)}
+    <p class="note" style="--i:4;text-align:center">${t("payNote")} <a href="/privacy">${t("privacy")}</a></p></div></div>`;
+  }
+  function accBody() {
+    const a = U.acc || { state: "none" }, st = a.state;
+    if (st === "member") return `<div class="done stag"><svg class="check" viewBox="0 0 84 84" style="--i:0"><circle cx="42" cy="42" r="42"/><path d="M26 43l11 11 21-23"/></svg>
+      <h2 style="--i:1;font-family:var(--f-serif);font-size:28px">${t("okT")}</h2>
+      <div class="card" style="--i:2;display:grid;gap:6px;text-align:center"><span class="note">${t("codeT")}</span><b id="tcodeShow" style="font-size:44px;letter-spacing:.3em;line-height:1.1">${esc(a.code)}</b><span class="note">${t("codeD")}</span></div>
+      <button type="button" class="btn primary block" style="--i:3" data-a="go" data-v="pay">${t("cont")}</button></div>`;
+    const top = st === "pending" ? `<div class="card" style="--i:0;display:grid;gap:8px;justify-items:center;text-align:center"><span class="spinner emb" style="width:54px;height:54px">${emblem()}</span><b style="font-size:18px">${t("waitT")}</b><span class="note">${t("waitD")}</span></div>`
+      : st === "blocked" ? `<div class="err" style="--i:0">${t("blockedD")}</div>`
+      : `${st === "denied" ? `<div class="err" style="--i:0">${t("deniedD")}</div>` : ""}<p style="--i:0;margin:0;font-size:16px">${t("accD")}</p><button type="button" class="btn primary block" style="--i:1" id="askBtn" data-a="ask" ${U.busy ? "disabled" : ""}>${t("ask")}</button>`;
+    const form = st === "blocked" ? "" : `<p class="note" style="--i:2;text-align:center;margin:0">— ${t("or")} —</p>
+      <form class="card" data-submit="join" style="--i:3;display:grid;gap:10px" novalidate><label for="tcode"><b>${t("haveCode")}</b></label>
+      <input type="text" id="tcode" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" placeholder="••••" aria-label="${t("codePh")}" style="font-size:28px;letter-spacing:.4em;text-align:center">
+      <button type="submit" class="btn block" id="joinBtn" ${U.busy ? "disabled" : ""}>${t("join")}</button></form>`;
+    return `${U.err ? `<div class="err">${esc(U.err)}</div>` : ""}${top}${form}`;
+  }
+  const sAccess = () => `<div class="g">${head(t("accT"), "cart")}<div class="gut stag" id="accBody" style="display:grid;gap:14px;padding-block:14px;flex:1;align-content:start">${accBody()}</div></div>`;
+  async function loadAccess() {
+    if (!M || !M.restaurant.table_guard) return;
+    try { const r = await rpc("table_access", { p_tag: tag, p_guest: tok }); if (r && r.ok) U.acc = r; } catch (e) { /* сеть: проверим позже */ }
   }
   function sDone() {
     const o = O[G.cur]; if (!o) return sMenu();
@@ -387,7 +414,7 @@ function Guest(tag) {
   }
   const sHistory = () => `<div class="g">${head(t("history"), "menu")}<div class="gut stag" id="histBody" style="display:grid;gap:12px;padding-block:14px;flex:1;align-content:start">${histBody()}</div>
     <div class="gut" style="padding-bottom:18px"><button type="button" class="btn primary block" data-a="go" data-v="menu">${t("more")}</button></div></div>`;
-  const S = { welcome: sWelcome, menu: sMenu, cart: sCart, pay: sPay, done: sDone, track: sTrack, history: sHistory };
+  const S = { welcome: sWelcome, menu: sMenu, cart: sCart, pay: sPay, done: sDone, track: sTrack, history: sHistory, access: sAccess };
 
   function render(anim) { document.documentElement.lang = G.lang === "ky" ? "ky" : G.lang; mount((S[G.screen] || sWelcome)(), anim); if (anim) window.scrollTo(0, 0); }
   function go(s) { U.err = ""; G.screen = s; save(); render(true); }
@@ -436,6 +463,7 @@ function Guest(tag) {
         await loadMenu(true);
         U.err = t("gone") + " " + names.join(", "); G.screen = "cart"; save(); render(true); return;
       }
+      if (res.code === "need_access") { U.acc = null; await loadAccess(); U.err = ""; G.screen = "access"; save(); render(true); return; }
       U.err = res.code === "table_off" ? t("tableOff") : res.code === "too_fast" ? t("tooFast") : res.code === "empty" ? t("empty") : t("fail");
       render(false); return;
     }
@@ -456,7 +484,30 @@ function Guest(tag) {
 
   cur = {
     acts: {
-      go: v => { if (v === "pay" && !G.cart.length) return; go(v); },
+      go: async v => {
+        if (v === "pay") { if (!G.cart.length) return; if (M.restaurant.table_guard) { await loadAccess(); if (needAcc()) return go("access"); } }
+        go(v);
+      },
+      ask: async () => {
+        if (U.busy) return; U.busy = true; U.err = ""; quiet(); const b = $("askBtn"); if (b) b.disabled = true;
+        try { const r = await rpc("request_table", { p_tag: tag, p_guest: tok }); if (r.ok) U.acc = r; else U.err = r.code === "too_fast" ? t("tooFast") : r.code === "table_off" ? t("tableOff") : t("fail"); }
+        catch (e) { U.err = t("net"); }
+        U.busy = false; render(false);
+      },
+      join: async () => {
+        if (U.busy) return; const c = (($("tcode") || {}).value || "").replace(/\D/g, "");
+        if (c.length !== 4) { U.err = t("enterCode"); quiet(); $("accBody").innerHTML = accBody(); return; }
+        U.busy = true; U.err = "";
+        try {
+          const r = await rpc("join_table", { p_tag: tag, p_guest: tok, p_code: c });
+          if (r.ok) U.acc = r;
+          else if (r.code === "wrong_code") U.err = t("wrong") + r.left;
+          else if (r.code === "blocked") U.acc = { state: "blocked" };
+          else if (r.code === "no_session") U.err = t("noSession");
+          else U.err = t("fail");
+        } catch (e) { U.err = t("net"); }
+        U.busy = false; quiet(); $("accBody") ? $("accBody").innerHTML = accBody() : render(false);
+      },
       lang: v => { G.lang = v; save(); render(false); if (!$("sheet").hidden && U.sh) redrawSheet(); },
       cat: v => { U.cat = v; quiet(); document.querySelectorAll(".cats button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === v)); const dl = $("dishList"); dl.innerHTML = dishList(); dl.style.animation = "none"; void dl.offsetWidth; dl.style.animation = "fade .3s var(--ease)"; },
       sheet: (v, b, e) => { if (e.target.closest(".plus")) return; openDish(v); },
@@ -480,10 +531,17 @@ function Guest(tag) {
     if (!(await loadMenu())) return;
     document.title = M.restaurant.name + " · Dastorkon";
     if (G.orders.length) await refreshOrders();
+    await loadAccess();
+    if (G.screen === "access" && !needAcc()) G.screen = G.cart.length ? "pay" : "menu";
     if (!S[G.screen] || (["done", "track"].includes(G.screen) && !O[G.cur])) G.screen = "welcome";
     if (G.screen === "pay" && !G.cart.length) G.screen = "menu";
     render(true);
     timers.push(setInterval(() => { if (document.visibilityState === "visible" && G.orders.length && ["done", "track", "history", "welcome", "menu"].includes(G.screen)) refreshOrders(); }, 6000));
+    timers.push(setInterval(async () => {
+      if (document.visibilityState !== "visible" || U.busy || !M.restaurant.table_guard || !U.acc || U.acc.state !== "pending") return;
+      const was = U.acc.state; await loadAccess();
+      if (U.acc && U.acc.state !== was && G.screen === "access") { quiet(); $("accBody").innerHTML = accBody(); }
+    }, 3000));
     timers.push(setInterval(() => { if (document.visibilityState === "visible" && G.screen === "menu" && !U.q) loadMenu(true).then(ok => ok && partial(false)); }, 60000));
   })();
 }
@@ -514,7 +572,7 @@ function Cabinet(ctx) {
   const role = rs.find(r => r.id === rid).role;
   const canManage = ["owner", "manager", "admin"].includes(role);
   const canStaff = ["owner", "admin"].includes(role);
-  const D = { rest: null, cats: [], items: [], addons: [], tables: [], tags: [], orders: [], staff: null, stats: null };
+  const D = { rest: null, cats: [], items: [], addons: [], tables: [], tags: [], orders: [], staff: null, stats: null, reqs: [], sess: [] };
   const U = { tab: canManage ? (store.get("nfc-ctab") || "orders") : "orders", view: role === "kitchen" ? "kitchen" : (store.get("nfc-cview") || "all"), seen: null, known: null, confirm: null, busy: false };
   if (!canManage) U.tab = "orders";
   const I = id => D.items.find(x => x.id === id);
@@ -539,7 +597,20 @@ function Cabinet(ctx) {
     list.forEach(o => U.known.add(o.id));
     D.orders = list;
     if (fresh.length && !first) { beep(); toast(fresh.length === 1 ? `Новый заказ: стол ${fresh[0].table_number}` : `Новых заказов: ${fresh.length}`); }
+    await loadGuard(first);
     return fresh;
+  }
+  async function loadGuard(first) {
+    if (!D.rest || !D.rest.table_guard) { D.reqs = []; D.sess = []; return; }
+    try {
+      const [reqs, sess] = await Promise.all([
+        q(sb.from("table_requests").select("*").eq("restaurant_id", rid).eq("status", "pending").gte("created_at", new Date(Date.now() - 15 * 60e3).toISOString()).order("created_at")),
+        q(sb.from("table_sessions").select("*").eq("restaurant_id", rid).is("closed_at", null).gte("created_at", new Date(Date.now() - 10 * 3600e3).toISOString()).order("table_number"))]);
+      if (!U.knownReq) U.knownReq = new Set(first ? reqs.map(x => x.id) : []);
+      const fresh = reqs.filter(x => !U.knownReq.has(x.id)); reqs.forEach(x => U.knownReq.add(x.id));
+      D.reqs = reqs; D.sess = sess;
+      if (fresh.length && !first) { beep(); toast(`Стол ${fresh[0].table_number} просит подтвердить`); }
+    } catch (e) { D.reqs = []; D.sess = []; }
   }
 
   /* --- заказы --- */
@@ -557,6 +628,18 @@ function Cabinet(ctx) {
     ${!o.paid && o.pay_method === "waiter" && U.view !== "kitchen" ? `<button type="button" class="btn sm" data-a="paid" data-v="${o.id}">Оплата получена</button>` : ""}
     ${!o.paid && o.status !== "served" && U.view !== "kitchen" ? `<button type="button" class="btn sm danger" data-a="cancel" data-v="${o.id}">${U.confirm === o.id ? "Точно отменить?" : "Отменить"}</button>` : ""}</div></div>`;
   }
+  function guardPanel() {
+    if (!D.rest.table_guard) return "";
+    const reqs = D.reqs.map(x => `<div style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px 12px;border-radius:12px;background:#fbe9eb;color:#121417">
+      <b style="font-size:17px">Стол ${x.table_number}</b><span class="note" style="flex:1;min-width:160px">гость просит подтвердить стол · ${time(x.created_at)}</span>
+      <span class="row" style="flex-wrap:nowrap"><button type="button" class="btn sm primary" data-a="reqok" data-v="${x.id}">Подтвердить</button><button type="button" class="btn sm" data-a="reqno" data-v="${x.id}">Отклонить</button></span></div>`).join("");
+    const open = D.sess.map(x => `<span class="pill" style="gap:6px">Стол ${x.table_number} · код <b class="mono" style="letter-spacing:.12em">${x.code}</b><button type="button" data-a="tclose" data-v="${x.table_id}" aria-label="Закрыть стол ${x.table_number}" title="Закрыть стол (гости ушли)" style="border:0;background:none;padding:0 0 0 4px;cursor:pointer;font:inherit;color:inherit">✕</button></span>`).join("");
+    return `<div class="card" style="display:grid;gap:10px;${D.reqs.length ? "border-color:#d62839;border-width:2px" : ""}">
+      <div class="row" style="justify-content:space-between"><h3 style="font-size:16px">${D.reqs.length ? `Ждут подтверждения: ${D.reqs.length}` : "Подтверждение столов"}</h3><span class="note">Подтверждайте, только если видите гостей за этим столом.</span></div>
+      ${reqs}
+      <div class="row"><span class="note">Открытые столы:</span>${open || `<span class="note">нет</span>`}</div>
+      <p class="note" style="margin:0">Код стола гости передают друзьям за столом. Код перестаёт работать, когда счёт оплачен, или нажмите ✕, когда гости ушли.</p></div>`;
+  }
   function tOrders() {
     const active = D.orders.filter(o => o.status !== "cancelled");
     let cols;
@@ -564,7 +647,9 @@ function Cabinet(ctx) {
     else cols = ST;
     const viewSw = role === "kitchen" ? "" : `<div class="langs plain" role="group" aria-label="Экран"><button type="button" data-a="view" data-v="all" aria-pressed="${U.view === "all"}">Все заказы</button><button type="button" data-a="view" data-v="kitchen" aria-pressed="${U.view === "kitchen"}">Экран кухни</button></div>`;
     return `<div class="banner">${viewSw}<span class="note" style="flex:1;min-width:200px">${D.rest.route === "waiter" ? "Новые заказы сначала видят официанты, на кухню их отправляет официант." : "Новые заказы сразу видит кухня."} Заказы обновляются сами, новый сопровождается звуком.</span>
-    ${canManage ? `<label for="route" class="lbl">Новые заказы:</label><select id="route" data-f="route"><option value="waiter" ${D.rest.route === "waiter" ? "selected" : ""}>сначала официантам</option><option value="kitchen" ${D.rest.route === "kitchen" ? "selected" : ""}>сразу на кухню</option></select>` : ""}</div>
+    ${canManage ? `<label for="route" class="lbl">Новые заказы:</label><select id="route" data-f="route"><option value="waiter" ${D.rest.route === "waiter" ? "selected" : ""}>сначала официантам</option><option value="kitchen" ${D.rest.route === "kitchen" ? "selected" : ""}>сразу на кухню</option></select>
+    ${"table_guard" in D.rest ? `<label class="chk" title="Гость не сможет заказать, пока официант не подтвердит стол или гость не введёт код стола"><input type="checkbox" id="guard" data-f="guard" ${D.rest.table_guard ? "checked" : ""}>Подтверждение стола официантом</label>` : ""}` : ""}</div>
+    ${U.view === "kitchen" ? "" : guardPanel()}
     <div class="board ${cols.length === 2 ? "k2" : cols.length === 1 ? "k1" : ""} ${U.view === "kitchen" ? "big" : ""}">${cols.map(s => {
       let os = active.filter(o => o.status === s);
       if (s === "served") os = os.filter(o => Date.now() - new Date(o.updated_at || o.created_at) < 3 * 3600e3).reverse().slice(0, 10);
@@ -656,7 +741,7 @@ function Cabinet(ctx) {
     <td><select id="tt-${x.id}" data-f="ttag" data-id="${x.id}" aria-label="Метка"><option value="">— нет —</option>${(x.tag_code ? [{ code: x.tag_code }] : []).concat(free).map(g => `<option value="${g.code}" ${g.code === x.tag_code ? "selected" : ""}>${g.code}</option>`).join("")}</select></td>
     <td>${x.tag_code ? `<a class="mono" href="${esc(tagLink(x.tag_code))}" target="_blank" rel="noopener">${esc(tagLink(x.tag_code).replace(/^https?:\/\//, ""))}</a>` : `<span class="note">Выберите метку</span>`}</td>
     <td><label class="sw"><input type="checkbox" id="ta-${x.id}" data-f="tact" data-id="${x.id}" ${x.active ? "checked" : ""} aria-label="Принимает заказы"><i></i></label></td>
-    <td><span class="row" style="flex-wrap:nowrap">${x.tag_code ? `<button type="button" class="btn sm" data-a="qr" data-v="${x.id}">QR</button><button type="button" class="btn sm" data-a="copy" data-v="${x.tag_code}">Копировать</button>` : ""}<button type="button" class="btn sm danger" data-a="tabledel" data-v="${x.id}">${U.confirm === x.id ? "Точно?" : "Удалить"}</button></span></td></tr>`).join("") || `<tr><td colspan="5" class="empty">Столов пока нет. Нажмите «+ Стол».</td></tr>`}
+    <td><span class="row" style="flex-wrap:nowrap">${D.rest.table_guard ? (() => { const ss = D.sess.find(z => z.table_id === x.id); return ss ? `<span class="pill">код <b class="mono" style="letter-spacing:.12em">${ss.code}</b></span><button type="button" class="btn sm" data-a="tclose" data-v="${x.id}">Закрыть стол</button>` : `<button type="button" class="btn sm" data-a="topen" data-v="${x.id}">Открыть стол</button>`; })() : ""}${x.tag_code ? `<button type="button" class="btn sm" data-a="qr" data-v="${x.id}">QR</button><button type="button" class="btn sm" data-a="copy" data-v="${x.tag_code}">Копировать</button>` : ""}<button type="button" class="btn sm danger" data-a="tabledel" data-v="${x.id}">${U.confirm === x.id ? "Точно?" : "Удалить"}</button></span></td></tr>`).join("") || `<tr><td colspan="5" class="empty">Столов пока нет. Нажмите «+ Стол».</td></tr>`}
     </tbody></table></div>`;
   }
   async function copyText(text) {
@@ -730,6 +815,10 @@ function Cabinet(ctx) {
       tab: v => { U.tab = v; store.set("nfc-ctab", v); if (v === "stats") D.stats = null; render(true); },
       view: v => { U.view = v; store.set("nfc-cview", v); render(false); },
       next: busyWrap(async v => { await rpc("advance_order", { p_id: v }); await loadOrders(); render(false); }),
+      reqok: busyWrap(async v => { const r = await rpc("approve_table_request", { p_id: v }); await loadGuard(); render(false); toast(`Стол ${r.table_number} подтверждён · код ${r.code}`); }),
+      reqno: busyWrap(async v => { await rpc("deny_table_request", { p_id: v }); await loadGuard(); render(false); toast("Запрос отклонён"); }),
+      topen: busyWrap(async v => { const r = await rpc("open_table", { p_table: v }); await loadGuard(); render(false); toast(`Стол ${r.table_number} открыт · код ${r.code}`); }),
+      tclose: busyWrap(async v => { await rpc("close_table", { p_table: v }); await loadGuard(); render(false); toast("Стол закрыт, код больше не работает"); }),
       paid: busyWrap(async v => { await rpc("mark_paid", { p_id: v }); await loadOrders(); render(false); toast("Оплата отмечена"); }),
       cancel: v => twoStep(v, busyWrap(async () => { await rpc("cancel_order", { p_id: v }); await loadOrders(); render(false); toast("Заказ отменён"); }))(),
       catadd: busyWrap(async () => { await q(sb.from("categories").insert({ restaurant_id: rid, name: { ru: "Новая категория" }, sort: D.cats.length })); await reloadMenu(); const last = D.cats[D.cats.length - 1]; const el = last && $("cn-" + last.id); el && (el.focus(), el.select()); }),
@@ -771,6 +860,7 @@ function Cabinet(ctx) {
       const el = e.target, f = el.dataset.f; if (!f) return; const id = el.dataset.id;
       if (f === "rsel") { store.set("nfc-rid", el.value); history.replaceState(null, "", location.pathname); route(); return; }
       if (f === "route") { await patchRest({ route: el.value }); render(false); return; }
+      if (f === "guard") { await patchRest({ table_guard: el.checked }); await loadGuard(); render(false); toast(el.checked ? "Подтверждение стола включено" : "Подтверждение стола выключено"); return; }
       if (f === "rname") { const v = el.value.trim(); if (!v) { el.value = D.rest.name; return; } await patchRest({ name: v }); render(false); toast("Сохранено"); return; }
       if (f === "catname") { const v = el.value.trim() || "Без названия"; const c = D.cats.find(x => x.id === id); const name = Object.assign({}, c.name, { ru: v }); await q(sb.from("categories").update({ name }).eq("id", id)); c.name = name; return; }
       if (f === "cat") { await q(sb.from("items").update({ category_id: el.value || null }).eq("id", id)); I(id).category_id = el.value || null; return; }
@@ -788,7 +878,8 @@ function Cabinet(ctx) {
     try { await loadAll(); } catch (e) { return fatal(errMsg(e), true); }
     render(true);
     const refresh = async () => { try { await loadOrders(); if (U.tab === "orders" && $("sheet").hidden && !(document.activeElement && /INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName))) { quiet(); render(false); } } catch (e) {} };
-    channel = sb.channel("orders-" + rid).on("postgres_changes", { event: "*", schema: "public", table: "orders", filter: "restaurant_id=eq." + rid }, () => { clearTimeout(refresh.t); refresh.t = setTimeout(refresh, 400); }).subscribe();
+    channel = sb.channel("orders-" + rid).on("postgres_changes", { event: "*", schema: "public", table: "orders", filter: "restaurant_id=eq." + rid }, () => { clearTimeout(refresh.t); refresh.t = setTimeout(refresh, 400); })
+      .on("postgres_changes", { event: "*", schema: "public", table: "table_requests", filter: "restaurant_id=eq." + rid }, () => { clearTimeout(refresh.t); refresh.t = setTimeout(refresh, 300); }).subscribe();
     timers.push(setInterval(() => { if (document.visibilityState === "visible") refresh(); }, 20000));
   })();
 }
